@@ -67,10 +67,12 @@ public class DBConnPool {
      * 获取数据库连接对象，单例
      */
     public static DBConnPool getInstance() {
+        System.out.println("getInstance");
         if (dbConnection == null) {
             synchronized (DBConnPool.class) {
                 if (dbConnection == null) {
                     DBConnPool dbcp = new DBConnPool();
+                    System.out.println("DBConnPool");
                     try {
                         Connection conn = dbcp.getConnection();
                         if (conn.isClosed()) {
@@ -80,10 +82,12 @@ public class DBConnPool {
                         e.printStackTrace();
                         return null;
                     }
+                    System.out.println("Set DBConnPool");
                     dbConnection = dbcp;
                 }
             }
         }
+        System.out.println("getInstance Success");
         return dbConnection;
     }
 
