@@ -16,15 +16,14 @@ public class DBInfoService {
     public DBInfoDao dbInfoDao;
 
     public Boolean isClosed() throws SQLException {
-        System.out.println("isClosed Start");
         DBConnPool dcp = DBConnPool.getInstance();
         if (dcp == null) {
             return true;
         }
-        System.out.println("isClosed getInstance success");
         Connection conn = dcp.getConnection();
-        System.out.println("isClosed getConnection success");
-        return conn.isClosed();
+        Boolean close = conn.isClosed();
+        conn.close();
+        return close;
     }
 
     public List<String> listTables() throws SQLException {
