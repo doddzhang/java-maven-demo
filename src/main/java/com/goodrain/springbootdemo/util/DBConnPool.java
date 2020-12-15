@@ -1,11 +1,11 @@
 package com.goodrain.springbootdemo.util;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.mchange.v2.c3p0.DataSources;
-
 import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.mchange.v2.c3p0.DataSources;
 
 public class DBConnPool {
     private static volatile DBConnPool dbConnection;
@@ -36,7 +36,7 @@ public class DBConnPool {
         cpds.setPassword(password);
 
         // 初始化时创建的连接数,应在minPoolSize与maxPoolSize之间取值.默认为3
-        cpds.setInitialPoolSize(3);
+        cpds.setInitialPoolSize(1);
         // 连接池中保留的最大连接数据.默认为15
         cpds.setMaxPoolSize(10);
         // 当连接池中的连接用完时，C3PO一次性创建新的连接数目;
@@ -49,10 +49,10 @@ public class DBConnPool {
         /*因性能消耗大请只在需要的时候使用它。如果设为true那么在每个connection提交的
          时候都将校验其有效性。建议使用idleConnectionTestPeriod或automaticTestTable
          等方法来提升连接测试的性能。Default: false*/
-        cpds.setTestConnectionOnCheckout(true);
+        cpds.setTestConnectionOnCheckout(false);
 
         // 如果设为true那么在取得连接的同时将校验连接的有效性。Default: false
-        cpds.setTestConnectionOnCheckin(true);
+        cpds.setTestConnectionOnCheckin(false);
         // 定义在从数据库获取新的连接失败后重复尝试获取的次数，默认为30;
         cpds.setAcquireRetryAttempts(30);
         /// 两次连接中间隔时间默认为1000毫秒
@@ -93,7 +93,10 @@ public class DBConnPool {
      * @return 数据库连接
      */
     public final synchronized Connection getConnection() throws SQLException {
-        return cpds.getConnection();
+        System.out.println("Get connection");
+        Connection con = cpds.getConnection();
+        System.out.println("Get connection success");
+        return con;
     }
 
     /**
